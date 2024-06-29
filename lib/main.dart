@@ -1,23 +1,27 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:maunc_flutter_project/bean/test_bean.dart';
+import 'package:maunc_flutter_project/utils/log_utils.dart';
+import 'package:maunc_flutter_project/utils/net_wrok_utils.dart';
 
 void main() {
   runApp(const MyApp());
+
+  NetWorkUtils.connectivityInitState();
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Home Page'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -34,25 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-
-    getAndroid();
-  }
-
-  void getAndroid() async {
-    try {
-      String result = await channel.invokeMethod("android_channel_name");
-      print("调用成功  $result");
-    } on PlatformException catch (e) {
-      print(e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,25 +45,46 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: Column(
+        children: <Widget>[
+          TextButton(
+            onPressed: testNetReq,
+            child: const Text("原生请求网络"),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: getAndroid,
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void getAndroid() async {
+    try {
+      String result = await channel.invokeMethod("android_channel_name");
+      LogUtils.log("调用成功  $result");
+    } on PlatformException catch (e) {
+      LogUtils.log(e.toString());
+    }
+  }
+
+  //原生网络请求
+  void testNetReq() async {
+    var httpClient = HttpClient();
+    var httpUrl = "https://api.oioweb.cn/api/common/history";
+    var uri = Uri.parse(httpUrl);
+
+    var request = await httpClient.getUrl(uri);
+    var response = await request.close();
+    //判断请求结果
+    if (response.statusCode == HttpStatus.ok) {
+      var result = await response.transform(utf8.decoder).join();
+      //打印成功结果
+      LogUtils.log(result);
+    } else {
+      LogUtils.log("${response.statusCode}");
+    }
+    httpClient.close();
   }
 }
