@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:maunc_flutter_project/utils/log_utils.dart';
 
 class NetWorkUtils {
   static late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -11,15 +12,27 @@ class NetWorkUtils {
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.none) {
-        print("无网");
-        isConnect = false;
-      } else if (result == ConnectivityResult.wifi) {
-        print("网络连接成功 wifi");
-        isConnect = true;
-      } else if (result == ConnectivityResult.mobile) {
-        print("网络连接成功  mobile");
-        isConnect = true;
+      switch (result) {
+        case ConnectivityResult.none:
+          LogUtils.log("无网");
+          isConnect = false;
+          break;
+        case ConnectivityResult.bluetooth:
+          break;
+        case ConnectivityResult.wifi:
+          LogUtils.log("网络连接成功 wifi");
+          isConnect = true;
+          break;
+        case ConnectivityResult.ethernet:
+          break;
+        case ConnectivityResult.mobile:
+          LogUtils.log("网络连接成功  mobile");
+          isConnect = true;
+          break;
+        case ConnectivityResult.vpn:
+          break;
+        case ConnectivityResult.other:
+          break;
       }
     });
   }

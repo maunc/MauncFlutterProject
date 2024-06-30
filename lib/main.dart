@@ -3,42 +3,39 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:maunc_flutter_project/bean/tt_bean.dart';
 import 'package:maunc_flutter_project/utils/log_utils.dart';
 import 'package:maunc_flutter_project/utils/net_work_utils.dart';
-import 'package:maunc_flutter_project/widgets/marquee_text_widget.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 
   NetWorkUtils.connectivityInitState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'Home Page'),
-      debugShowCheckedModeBanner: false,
+    return const GetMaterialApp(
+      home: HomePage(),
+      debugShowCheckedModeBanner: false, //去掉debug横幅
     );
   }
 }
 
 const channel = MethodChannel("android_channel_name");
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   List<Result?> lists = [];
 
   @override
@@ -63,23 +60,25 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                color: Colors.red,
-                height: 100,
-                width: 100,
-                child: TextButton(
-                  onPressed: testNetReq,
-                  child: const Text("测试网路数据"),
-                ),
+              TextButton(
+                onPressed: historyToDayData,
+                child: const Text("历史上的今天"),
               ),
               ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return MarqueeTextWidget(
+                  return InkWell(
                     child: Text(
                       lists[index]?.title ?? "",
-                      style: const TextStyle(color: Colors.blue, fontSize: 25),
+                      style: const TextStyle(color: Colors.blue, fontSize: 18),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    onTap: () {
+                      showGetXSnackBar(
+                          title: lists[index]?.title ?? "",
+                          content: "发生日期：${lists[index]?.year ?? "未知"}");
+                    },
                   );
                 },
                 itemCount: lists.length,
@@ -87,10 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getAndroid,
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -104,11 +99,35 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void showGetXSnackBar(
+      {String title = "", String content = "", int showTimeSeconds = 3}) {
+    if (Get.isSnackbarOpen) {
+      return;
+    }
+    Get.snackbar(
+      title,
+      content,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.blue,
+      colorText: Colors.white,
+      duration: Duration(seconds: showTimeSeconds),
+      onTap: (snack) {
+        LogUtils.log("点击了SnackBar");
+      },
+    );
+  }
+
+  void showGetXDialog({String title = "", String content = ""}) {
+    Get.defaultDialog(title: title, middleText: content);
+  }
+
   //原生网络请求
-  void testNetReq() async {
+  void historyToDayData() async {
     var httpClient = HttpClient();
     var httpUrl = "https://api.oioweb.cn/api/common/history";
     var uri = Uri.parse(httpUrl);
+
+    showGetXDialog(title: "网络请求", content: "加载中。。。");
 
     var request = await httpClient.getUrl(uri);
     var response = await request.close();
@@ -120,10 +139,14 @@ class _MyHomePageState extends State<MyHomePage> {
       LogUtils.log(result);
       var ttBean = TtBean.fromJson(data);
       LogUtils.log(ttBean.msg!);
+      if (lists.isNotEmpty) {
+        lists.clear();
+      }
       ttBean.result?.forEach((bean) {
         lists.add(bean);
       });
       LogUtils.log("${lists.length}");
+      Get.back();
       setState(() {});
     } else {
       LogUtils.log("${response.statusCode}");
