@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:maunc_flutter_project/bean/test_bean.dart';
+import 'package:maunc_flutter_project/bean/tt_bean.dart';
 import 'package:maunc_flutter_project/utils/log_utils.dart';
-import 'package:maunc_flutter_project/utils/net_wrok_utils.dart';
+import 'package:maunc_flutter_project/utils/net_work_utils.dart';
+import 'package:maunc_flutter_project/widgets/marquee_text_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,20 +39,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Result?> lists = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        toolbarHeight: 0,
+        backgroundColor: Colors.white,
       ),
-      body: Column(
-        children: <Widget>[
-          TextButton(
-            onPressed: testNetReq,
-            child: const Text("原生请求网络"),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                color: Colors.red,
+                height: 100,
+                width: 100,
+                child: TextButton(
+                  onPressed: testNetReq,
+                  child: const Text("测试网路数据"),
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return MarqueeTextWidget(
+                    child: Text(
+                      lists[index]?.title ?? "",
+                      style: const TextStyle(color: Colors.blue, fontSize: 25),
+                    ),
+                  );
+                },
+                itemCount: lists.length,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getAndroid,
@@ -80,8 +115,16 @@ class _MyHomePageState extends State<MyHomePage> {
     //判断请求结果
     if (response.statusCode == HttpStatus.ok) {
       var result = await response.transform(utf8.decoder).join();
+      var data = jsonDecode(result);
       //打印成功结果
       LogUtils.log(result);
+      var ttBean = TtBean.fromJson(data);
+      LogUtils.log(ttBean.msg!);
+      ttBean.result?.forEach((bean) {
+        lists.add(bean);
+      });
+      LogUtils.log("${lists.length}");
+      setState(() {});
     } else {
       LogUtils.log("${response.statusCode}");
     }
