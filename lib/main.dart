@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       //去掉debug横幅
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.fade,
-      initialRoute: RoutePage.home,
+      initialRoute: RoutePage.main,
       getPages: RoutePage.getPages,
     );
   }
