@@ -6,4 +6,10 @@ class LogUtils {
       print(message);
     }
   }
+
+  static void logln(String message) {
+    if (kDebugMode) {
+      print("$message\n");
+    }
+  }
 }

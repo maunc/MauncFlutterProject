@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maunc_flutter_project/pages/home/home_controller.dart';
 
-class HomePage extends GetView<HomeController> {
-  HomePage({super.key});
+import 'setting_controller.dart';
 
-  // List<Result?> get lists {
-  //   return controller.ttBean.value == null
-  //       ? []
-  //       : controller.ttBean.value!.result ?? [];
-  // }
-
-  @override
-  late HomeController controller;
+class SettingPage extends GetView<SettingController> {
+  const SettingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => HomeController());
-    controller = Get.find();
     return Obx(() => _buildWidgetTree());
   }
 
@@ -39,7 +29,7 @@ class HomePage extends GetView<HomeController> {
                 onPressed: () {
                   controller.addCount();
                 },
-                child: Text("HomePage${controller.homeCount}"),
+                child: Text("HomePage${controller.settingCount}"),
               ),
             ],
           ),

@@ -1,46 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maunc_flutter_project/bean/tt_bean.dart';
 import 'package:maunc_flutter_project/pages/main/main_controller.dart';
-import 'package:maunc_flutter_project/utils/get_widget_show_utils.dart';
+import 'package:maunc_flutter_project/utils/log_utils.dart';
 
 class MainPage extends GetView<MainController> {
   const MainPage({super.key});
 
-  List<Result?> get lists {
-    return controller.ttBean.value == null
-        ? []
-        : controller.ttBean.value!.result ?? [];
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            toolbarHeight: 0,
-            backgroundColor: Colors.white,
-          ),
-          body: SafeArea(
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: controller.historyToDayData,
-                    child: const Text("历史上的今天"),
-                  ),
-                  showDataList(),
-                ],
-              ),
-            ),
-          ),
-          bottomNavigationBar: homeBottomNavigationBar()),
+    return Obx(() => _buildWidgetTree());
+  }
+
+  Widget _buildWidgetTree() {
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          toolbarHeight: 0,
+          backgroundColor: Colors.white,
+        ),
+        body: SafeArea(child: homePageView()),
+        bottomNavigationBar: homeBottomNavigationBar());
+  }
+
+  Widget homePageView() {
+    return PageView(
+      controller: controller.pageViewController,
+      onPageChanged: (index) => controller.selectMainTab(index),
+      physics: const NeverScrollableScrollPhysics(),
+      children: [controller.homePage, controller.findPage, controller.minePage],
     );
   }
 
@@ -56,10 +43,6 @@ class MainPage extends GetView<MainController> {
           label: '发现',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: '设置',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
           label: '我的',
         ),
@@ -70,29 +53,7 @@ class MainPage extends GetView<MainController> {
       type: BottomNavigationBarType.fixed,
       elevation: 10,
       currentIndex: controller.currentIndex.value,
-      onTap: (index) => controller.selectHomeTab(index),
-    );
-  }
-
-  Widget showDataList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return InkWell(
-          child: Text(
-            lists[index]?.title ?? "",
-            style: const TextStyle(color: Colors.blue, fontSize: 18),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          onTap: () {
-            showGetXSnackBar(
-                title: lists[index]?.title ?? "",
-                content: "发生日期：${lists[index]?.year ?? "未知"}");
-          },
-        );
-      },
-      itemCount: lists.length,
+      onTap: (index) => controller.selectMainTab(index),
     );
   }
 }

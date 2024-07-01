@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maunc_flutter_project/pages/home/home_controller.dart';
+import 'package:maunc_flutter_project/pages/mine/mine_controller.dart';
 
-class HomePage extends GetView<HomeController> {
-  HomePage({super.key});
-
-  // List<Result?> get lists {
-  //   return controller.ttBean.value == null
-  //       ? []
-  //       : controller.ttBean.value!.result ?? [];
-  // }
+class MinePage extends GetView<MineController> {
+  MinePage({super.key});
 
   @override
-  late HomeController controller;
+  late MineController controller;
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => MineController());
     controller = Get.find();
     return Obx(() => _buildWidgetTree());
   }
@@ -36,10 +30,8 @@ class HomePage extends GetView<HomeController> {
           child: Column(
             children: [
               TextButton(
-                onPressed: () {
-                  controller.addCount();
-                },
-                child: Text("HomePage${controller.homeCount}"),
+                onPressed: controller.addCount,
+                child: Text("MinePage${controller.mineCount}"),
               ),
             ],
           ),
