@@ -3,11 +3,11 @@ import 'package:maunc_flutter_project/pages/setting/setting_binding.dart';
 import 'package:maunc_flutter_project/pages/setting/setting_page.dart';
 import 'package:maunc_flutter_project/route/app_routes.dart';
 
-import '../pages/find/find_page.dart';
-import '../pages/home/home_page.dart';
+import '../pages/main/find/find_page.dart';
+import '../pages/main/home/home_page.dart';
 import '../pages/main/main_binding.dart';
 import '../pages/main/main_page.dart';
-import '../pages/mine/mine_page.dart';
+import '../pages/main/mine/mine_page.dart';
 
 class AppPages {
   static final List<GetPage> getPages = [

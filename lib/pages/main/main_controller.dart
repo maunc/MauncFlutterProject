@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:maunc_flutter_project/base/base_getx_controller.dart';
-import 'package:maunc_flutter_project/pages/home/home_page.dart';
-import 'package:maunc_flutter_project/pages/mine/mine_page.dart';
 
-import '../find/find_page.dart';
+import 'find/find_page.dart';
+import 'home/home_page.dart';
+import 'mine/mine_page.dart';
 
 class MainController extends BaseGetxController {
   //home底部导航栏当前选中

@@ -14,6 +14,18 @@ void showGetXSnackBar(
     snackPosition: SnackPosition.TOP,
     backgroundColor: Colors.blue,
     colorText: Colors.white,
+    titleText: Text(title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        )),
+    messageText: Text(content,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        )),
     duration: Duration(seconds: showTimeSeconds),
     onTap: (snack) {
       LogUtils.log("点击了SnackBar");

@@ -17,7 +17,8 @@ class App extends StatelessWidget {
       enableLog: true,
       //去掉debug横幅
       debugShowCheckedModeBanner: false,
-      defaultTransition: Transition.fade,
+      //page切换动画
+      defaultTransition: Transition.downToUp,
       initialRoute: AppRoutes.main,
       getPages: AppPages.getPages,
     );

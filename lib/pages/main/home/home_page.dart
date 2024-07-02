@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:maunc_flutter_project/bean/today_in_history_bean.dart';
+import 'package:maunc_flutter_project/utils/get_widget_show_utils.dart';
+
+import 'home_controller.dart';
+
+class HomePage extends GetView<HomeController> {
+  HomePage({super.key});
+
+  @override
+  late HomeController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    Get.lazyPut(() => HomeController());
+    controller = Get.find();
+    return Obx(() => _buildWidgetTree());
+  }
+
+  Widget _buildWidgetTree() {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Colors.white,
+      ),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTitle(),
+              controller.isShowProgress.value
+                  ? _buildProgress()
+                  : _buildHistoryListView()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return const Padding(
+      padding: EdgeInsets.only(left: 15, top: 15),
+      child: Text(
+        "历史上的今天",
+        style: TextStyle(
+          color: Colors.blue,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProgress() {
+    return const Expanded(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildHistoryListView() {
+    return Expanded(
+      child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return _buildHistoryItem(
+                controller.toDayInHistoryData.value?.result?[index]);
+          },
+          itemCount: controller.toDayInHistoryData.value?.result?.length ?? 0),
+    );
+  }
+
+  Widget _buildHistoryItem(TodayInHistoryResult? result) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
+      child: InkWell(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15, top: 15, bottom: 5),
+                child: Text(
+                  "历史年份: ${result?.year}",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, top: 2, bottom: 10),
+                child: Text(
+                  "事件: ${result?.title}",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        onTap: () {},
+        onLongPress: () {
+          showGetXSnackBar(
+              title: "历史年份:${result?.year ?? "未知"}",
+              content: result?.title ?? "");
+        },
+      ),
+    );
+  }
+}

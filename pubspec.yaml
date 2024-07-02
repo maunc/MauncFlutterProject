@@ -37,6 +37,7 @@ dependencies:
   connectivity_plus: ^3.0.3 #网络判断
   json_annotation: ^4.5.0  #Json解析
   get: ^4.3.8   #getX框架
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:

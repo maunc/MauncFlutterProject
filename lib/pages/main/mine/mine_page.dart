@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maunc_flutter_project/pages/find/find_controller.dart';
 
-class FindPage extends GetView<FindController> {
-  FindPage({super.key});
+import 'mine_controller.dart';
+
+class MinePage extends GetView<MineController> {
+  MinePage({super.key});
 
   @override
-  late FindController controller;
+  late MineController controller;
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => FindController());
+    Get.lazyPut(() => MineController());
     controller = Get.find();
     return Obx(() => _buildWidgetTree());
   }
@@ -31,7 +32,7 @@ class FindPage extends GetView<FindController> {
             children: [
               TextButton(
                 onPressed: controller.addCount,
-                child: Text("FindPage${controller.findCount}"),
+                child: Text("MinePage${controller.mineCount}"),
               ),
             ],
           ),
