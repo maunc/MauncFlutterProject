@@ -4,4 +4,7 @@ class AppUrlConstant {
 
   //历史上的今天
   static const String todayInHistory = "api/common/history";
+
+  //图片接口
+  static const String imageUrl = "api/bing";
 }

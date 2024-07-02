@@ -37,7 +37,10 @@ dependencies:
   connectivity_plus: ^3.0.3 #网络判断
   json_annotation: ^4.5.0  #Json解析
   get: ^4.3.8   #getX框架
-  dio: ^5.3.3
+  dio: ^5.3.3  #网络框架
+  #flutter_swiper: ^1.1.6  #轮播图 Dart3 不支持空安全
+  flutter_swiper_null_safety: ^1.0.2 #轮播图
+  cached_network_image: ^3.3.1 #加载网络图片
 
 dev_dependencies:
   flutter_test:
@@ -64,10 +67,10 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/black_cat.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
