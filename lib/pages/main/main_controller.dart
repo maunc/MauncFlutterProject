@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:maunc_flutter_project/base/base_getx_controller.dart';
+import 'package:maunc_flutter_project/base/base_controller.dart';
 
 import 'find/find_page.dart';
 import 'home/home_page.dart';
 import 'mine/mine_page.dart';
 
-class MainController extends BaseGetxController {
+class MainController extends BaseController {
   //home底部导航栏当前选中
   var currentIndex = 0.obs;
 

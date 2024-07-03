@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:maunc_flutter_project/base/base_getx_controller.dart';
+import 'package:maunc_flutter_project/base/base_controller.dart';
 
-class MineController extends BaseGetxController {
+class MineController extends BaseController {
   var mineCount = 0.obs;
 
   void addCount() {

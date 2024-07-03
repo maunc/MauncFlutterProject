@@ -41,6 +41,7 @@ dependencies:
   #flutter_swiper: ^1.1.6  #轮播图 Dart3 不支持空安全
   flutter_swiper_null_safety: ^1.0.2 #轮播图
   cached_network_image: ^3.3.1 #加载网络图片
+  fluttertoast: ^8.2.6
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +71,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/black_cat.png
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

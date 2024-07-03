@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maunc_flutter_project/pages/main/main_controller.dart';
-import 'package:maunc_flutter_project/utils/log_utils.dart';
+import 'package:maunc_flutter_project/widgets/keep_alive_wrapper.dart';
+
+import '../../base/base_root_widget.dart';
 
 class MainPage extends GetView<MainController> {
   const MainPage({super.key});
@@ -12,14 +14,10 @@ class MainPage extends GetView<MainController> {
   }
 
   Widget _buildWidgetTree() {
-    return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          toolbarHeight: 0,
-          backgroundColor: Colors.white,
-        ),
-        body: SafeArea(child: homePageView()),
-        bottomNavigationBar: homeBottomNavigationBar());
+    return baseScaffold(
+      body: homePageView(),
+      bottomNavigationBar: homeBottomNavigationBar(),
+    );
   }
 
   Widget homePageView() {
@@ -27,7 +25,11 @@ class MainPage extends GetView<MainController> {
       controller: controller.pageViewController,
       onPageChanged: (index) => controller.selectMainTab(index),
       physics: const NeverScrollableScrollPhysics(),
-      children: [controller.homePage, controller.findPage, controller.minePage],
+      children: [
+        KeepAliveWrapper(child: controller.homePage),
+        KeepAliveWrapper(child: controller.findPage),
+        KeepAliveWrapper(child: controller.minePage),
+      ],
     );
   }
 

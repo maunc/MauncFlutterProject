@@ -8,4 +8,6 @@ class AppRoutes {
   static const String main_mine = "/main/mine";
 
   static const String setting = "/setting";
+
+  static const String search = "/search";
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maunc_flutter_project/base/base_root_widget.dart';
 
 import 'mine_controller.dart';
 
@@ -17,25 +18,18 @@ class MinePage extends GetView<MineController> {
   }
 
   Widget _buildWidgetTree() {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        toolbarHeight: 0,
-        backgroundColor: Colors.white,
-      ),
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: Colors.white,
-          child: Column(
-            children: [
-              TextButton(
-                onPressed: controller.addCount,
-                child: Text("MinePage${controller.mineCount}"),
-              ),
-            ],
-          ),
+    return baseScaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.white,
+        child: Column(
+          children: [
+            TextButton(
+              onPressed: controller.addCount,
+              child: Text("MinePage${controller.mineCount}"),
+            ),
+          ],
         ),
       ),
     );

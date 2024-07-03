@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../utils/log_utils.dart';
+import '../ext/ext_common.dart';
 
 class ErrorInterceptor extends Interceptor {
   @override
@@ -14,28 +14,28 @@ class ErrorInterceptor extends Interceptor {
     super.onError(err, handler);
     switch (err.type) {
       case DioExceptionType.unknown:
-        LogUtils.log("unknown");
+        logD("unknown");
         break;
       case DioExceptionType.badResponse:
-        LogUtils.log("badResponse");
+        logD("badResponse");
         break;
       case DioExceptionType.cancel:
-        LogUtils.log("cancel");
+        logD("cancel");
         break;
       case DioExceptionType.connectionTimeout:
-        LogUtils.log("connectionTimeout");
+        logD("connectionTimeout");
         break;
       case DioExceptionType.connectionError:
-        LogUtils.log("connectionError");
+        logD("connectionError");
         break;
       case DioExceptionType.receiveTimeout:
-        LogUtils.log("receiveTimeout");
+        logD("receiveTimeout");
         break;
       case DioExceptionType.sendTimeout:
-        LogUtils.log("sendTimeout");
+        logD("sendTimeout");
         break;
       case DioExceptionType.badCertificate:
-        LogUtils.log("badCertificate");
+        logD("badCertificate");
         break;
       default:
     }

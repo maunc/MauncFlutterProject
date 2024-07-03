@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maunc_flutter_project/base/base_root_widget.dart';
 import 'package:maunc_flutter_project/bean/today_in_history_bean.dart';
-import 'package:maunc_flutter_project/utils/get_widget_show_utils.dart';
 
+import '../../../ext/ext_common.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -19,27 +20,20 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildWidgetTree() {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        toolbarHeight: 0,
-        backgroundColor: Colors.white,
-      ),
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitle(),
-              controller.isShowProgress.value
-                  ? _buildProgress()
-                  : _buildHistoryListView()
-            ],
-          ),
+    return baseScaffold(
+      body: Container(
+        width: screenWidth(),
+        height: screenHeight(),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTitle(),
+            controller.isShowProgress.value
+                ? _buildProgress()
+                : _buildHistoryListView()
+          ],
         ),
       ),
     );
